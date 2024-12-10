@@ -161,7 +161,7 @@ const SmartWatchCard = () => {
         {cartItems.length > 0 && (
           <button
             onClick={() => setShowCheckout(true)}
-            className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#FFBB5A] text-[#364A63] font-semibold px-5 py-3 rounded-full shadow-lg"
+            className="fixed bottom-1 md:bottom-8 left-1/2 transform -translate-x-1/2 bg-[#FFBB5A] text-[#364A63] font-semibold px-3 py-1 md:px-5 md:py-3 rounded-full shadow-lg"
           >
             Checkout{" "}
             <span className="ml-1 rounded-md bg-white text-[#364A63] px-2">
