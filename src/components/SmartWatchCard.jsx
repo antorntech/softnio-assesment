@@ -1,12 +1,12 @@
+import React, { useState } from "react";
 import { Heart } from "iconsax-react";
-import { useState } from "react";
+import CartModal from "./CartModal";
 
 const SmartWatchCard = () => {
   const [selectedColor, setSelectedColor] = useState("purple");
   const [selectedSize, setSelectedSize] = useState(null);
   const [quantity, setQuantity] = useState(0);
-  const [showFloatingButton, setShowFloatingButton] = useState(false);
-  const [showCheckoutModal, setShowCheckoutModal] = useState(false);
+  const [showCheckout, setShowCheckout] = useState(false);
   const [cartItems, setCartItems] = useState([]);
 
   const watchImages = {
@@ -20,6 +20,7 @@ const SmartWatchCard = () => {
     if (selectedSize && quantity > 0) {
       const newItem = {
         id: `${selectedColor}-${selectedSize}`,
+        name: "Classy Modern Smart Watch",
         color: selectedColor,
         size: selectedSize,
         quantity: quantity,
@@ -27,8 +28,7 @@ const SmartWatchCard = () => {
         image: watchImages[selectedColor],
       };
 
-      setCartItems([newItem]); // Adding the new item to the cart
-      setShowFloatingButton(true);
+      setCartItems((prevItems) => [...prevItems, newItem]);
     } else {
       alert("Please select a wrist size and quantity before adding to cart.");
     }
@@ -70,7 +70,7 @@ const SmartWatchCard = () => {
           <span className="ml-2 text-gray-600">(2 Reviews)</span>
         </div>
         <div className="text-gray-400 line-through">$99.00</div>
-        <div className="text-2xl text-blue-600 font-bold mb-4">$79.00</div>
+        <div className="text-2xl text-[#6576FF] font-bold mb-4">$79.00</div>
         <p className="text-gray-600 mb-4">
           I must explain to you how all this mistaken idea of denouncing
           pleasure was born.
@@ -105,15 +105,27 @@ const SmartWatchCard = () => {
                 key={size}
                 className={`border px-4 py-2 rounded transition-colors duration-200 font-bold ${
                   selectedSize === size
-                    ? "text-black border-blue-600"
+                    ? "text-black border-[#6576FF]"
                     : "border-gray-300 text-gray-700 hover:bg-gray-200"
                 }`}
                 onClick={() => setSelectedSize(size)}
               >
-                {size}
-                <span className="font-normal text-gray-400 ml-1">
-                  ${sizePrice(size)}
+                <span
+                  className={`text-lg transition-colors duration-200 font-bold ${
+                    selectedSize === size ? "text-[#6576FF]" : "text-black"
+                  }`}
+                >
+                  {size}
                 </span>
+                {size === "S" ? (
+                  <span className="font-normal text-gray-400"> $69</span>
+                ) : size === "M" ? (
+                  <span className="font-normal text-gray-400"> $79</span>
+                ) : size === "L" ? (
+                  <span className="font-normal text-gray-400"> $89</span>
+                ) : (
+                  <span className="font-normal text-gray-400"> $99</span>
+                )}
               </button>
             ))}
           </div>
@@ -137,73 +149,35 @@ const SmartWatchCard = () => {
           </div>
           <button
             onClick={handleAddToCart}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-[#6576FF] text-white px-6 py-2 rounded hover:bg-[#6576FF]"
           >
             Add to Cart
           </button>
           <button>
-            <Heart size="32" color="#FF8A65" />
+            <Heart size="32" color="#6576FF" />
           </button>
         </div>
+
+        {cartItems.length > 0 && (
+          <button
+            onClick={() => setShowCheckout(true)}
+            className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#FFBB5A] text-[#364A63] font-semibold px-5 py-3 rounded-full shadow-lg"
+          >
+            Checkout{" "}
+            <span className="ml-1 rounded-md bg-white text-[#364A63] px-2">
+              {cartItems.reduce((total, item) => total + item.quantity, 0)}
+            </span>
+          </button>
+        )}
       </div>
 
-      {showFloatingButton && (
-        <button
-          onClick={() => setShowCheckoutModal(true)}
-          className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-[#FFBB5A] text-[#364A63] font-semibold px-5 py-3 rounded-full shadow-lg"
-        >
-          Checkout{" "}
-          <span className="ml-1 rounded-md bg-white text-[#364A63] px-2">
-            {quantity}
-          </span>
-        </button>
-      )}
-
-      {showCheckoutModal && (
+      {showCheckout && (
         <CartModal
           cartItems={cartItems}
-          setShowCheckoutModal={setShowCheckoutModal}
+          setShowCheckout={setShowCheckout}
+          setCartItems={setCartItems}
         />
       )}
-    </div>
-  );
-};
-
-const CartModal = ({ cartItems, setShowCheckoutModal }) => {
-  const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0);
-
-  return (
-    <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg p-6 w-1/2 max-w-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-semibold">Your Cart</h2>
-          <button
-            onClick={() => setShowCheckoutModal(false)}
-            className="text-gray-600 hover:text-gray-800"
-          >
-            ×
-          </button>
-        </div>
-        {cartItems.map((item) => (
-          <div key={item.id} className="flex gap-4 mb-4">
-            <img
-              src={item.image}
-              alt="Watch"
-              className="w-16 h-16 object-cover rounded"
-            />
-            <div>
-              <h3 className="font-bold">{item.size}</h3>
-              <p>Color: {item.color}</p>
-              <p>Qty: {item.quantity}</p>
-              <p>Price: ${item.price}</p>
-            </div>
-          </div>
-        ))}
-        <div className="flex justify-between mt-4 border-t pt-4">
-          <span className="font-semibold">Total:</span>
-          <span className="font-semibold">${totalPrice}</span>
-        </div>
-      </div>
     </div>
   );
 };
