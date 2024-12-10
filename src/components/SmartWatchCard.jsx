@@ -54,8 +54,8 @@ const SmartWatchCard = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 flex gap-8">
-      <div className="w-1/2 rounded-lg">
+    <div className="w-full md:max-w-4xl md:mx-auto p-6 flex flex-col md:flex-row gap-8">
+      <div className="md:w-1/2 rounded-lg">
         <img
           src={watchImages[selectedColor]}
           alt="Smart Watch"
@@ -63,7 +63,7 @@ const SmartWatchCard = () => {
         />
       </div>
 
-      <div className="w-1/2">
+      <div className="md:w-1/2">
         <h2 className="text-3xl font-bold mb-2">Classy Modern Smart Watch</h2>
         <div className="flex items-center mb-4">
           <span className="text-yellow-500">★★★★☆</span>

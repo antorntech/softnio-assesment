@@ -11,7 +11,7 @@ const CartModal = ({ cartItems, setShowCheckout, setCartItems }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-3xl p-6 w-2/3 max-w-3xl">
+      <div className="bg-white rounded-3xl p-6 w-[95%] md:w-2/3 md:max-w-3xl">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold">Your Cart</h2>
           <button
@@ -48,7 +48,9 @@ const CartModal = ({ cartItems, setShowCheckout, setCartItems }) => {
                         alt="Watch"
                         className="w-12 h-12 object-cover rounded"
                       />
-                      <span className="font-medium">{item.name}</span>
+                      <span className="font-medium hidden md:block">
+                        {item.name}
+                      </span>
                     </td>
                     <td className="py-4 capitalize">{item.color}</td>
                     <td className="py-4 font-bold">{item.size}</td>
@@ -75,7 +77,7 @@ const CartModal = ({ cartItems, setShowCheckout, setCartItems }) => {
             <div className="mt-6 flex justify-end gap-4">
               <button
                 onClick={() => setShowCheckout(false)}
-                className="border border-gray-300 text-gray-700 font-bold px-6 py-2 rounded hover:bg-gray-300"
+                className="border border-gray-300 whitespace-nowrap text-gray-700 font-bold px-6 py-2 rounded hover:bg-gray-300"
               >
                 Continue Shopping
               </button>
