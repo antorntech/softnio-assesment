@@ -23,8 +23,15 @@ const SmartWatchCard = () => {
   };
 
   const handleIncrement = () => setQuantity((prev) => prev + 1);
-  const handleDecrement = () =>
-    setQuantity((prev) => (prev > 0 ? prev - 1 : 0));
+  const handleDecrement = () => {
+    setQuantity((prev) => {
+      const newQuantity = prev > 0 ? prev - 1 : 0;
+      if (newQuantity === 0) {
+        setShowCheckout(false); // Hide checkout button when quantity is 0
+      }
+      return newQuantity;
+    });
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 flex gap-8">
@@ -122,12 +129,12 @@ const SmartWatchCard = () => {
           </div>
           <button
             onClick={handleAddToCart}
-            className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700"
+            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-700"
           >
             Add to Cart
           </button>
           <button>
-            <Heart size="32" color="#FF8A65" />
+            <Heart size="32" color="#2563EB" />
           </button>
         </div>
 
